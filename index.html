@@ -29,8 +29,11 @@
     <label>الموقع الإلكتروني:</label>
     <input type="text" id="websiteInput" value="www.rgcc.ae">
 
-    <label>رقم الهاتف:</label>
+    <label>1 رقم الهاتف:</label>
     <input type="text" id="phoneInput" value="971545342563">
+
+    <label>2 رقم الهاتف:</label>
+    <input type="text" id="phoneInput2" value="971545342563">
 
     <button onclick="updateSVG()">تحديث الصورة</button>
     <button onclick="downloadSVG()">تحميل الصورة</button>
@@ -66,7 +69,7 @@
                 { selector: "text:nth-of-type(4)", value: document.getElementById("emailInput").value },
                 { selector: "text:nth-of-type(5)", value: document.getElementById("websiteInput").value },
                 { selector: "text:nth-of-type(6)", value: document.getElementById("phoneInput").value },
-                { selector: "text:nth-of-type(7)", value: document.getElementById("phoneInput").value } // لتحديث الرقم في مكانين
+                { selector: "text:nth-of-type(7)", value: document.getElementById("phoneInput2").value } // لتحديث الرقم في مكانين
             ];
 
             fields.forEach(field => {
