@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعديل وتحميل SVG</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        svg { width: 80%; max-width: 600px; margin: 20px 0; border: 1px solid #ccc; }
+        input { display: block; margin: 10px auto; padding: 5px; width: 80%; max-width: 300px; }
+    </style>
+</head>
+<body>
+
+    <h2>تعديل بيانات الـ SVG</h2>
+    
+    <label>الاسم:</label>
+    <input type="text" id="nameInput" value="ABEER SALEH">
+
+    <label>المسمى الوظيفي:</label>
+    <input type="text" id="jobInput" value="Sr.BD Engineer">
+
+    <label>العنوان:</label>
+    <input type="text" id="locationInput" value="Abu Dhabi, UAE">
+
+    <label>البريد الإلكتروني:</label>
+    <input type="text" id="emailInput" value="bd@rgcc.ae">
+
+    <label>الموقع الإلكتروني:</label>
+    <input type="text" id="websiteInput" value="www.rgcc.ae">
+
+    <label>رقم الهاتف:</label>
+    <input type="text" id="phoneInput" value="971545342563">
+
+    <button onclick="updateSVG()">تحديث الصورة</button>
+    <button onclick="downloadSVG()">تحميل الصورة</button>
+
+    <br><br>
+    <div id="svgContainer">جارٍ تحميل الصورة...</div>
+
+    <script>
+        let svgElement;
+
+        async function loadSVG() {
+            try {
+                const response = await fetch("lastupdat.svg");
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+                const data = await response.text();
+                document.getElementById("svgContainer").innerHTML = data;
+                svgElement = document.querySelector("#svgContainer svg");
+
+            } catch (error) {
+                console.error("فشل تحميل الـ SVG:", error);
+                document.getElementById("svgContainer").textContent = "⚠️ فشل تحميل الصورة!";
+            }
+        }
+
+        function updateSVG() {
+            if (!svgElement) return alert("الـ SVG لم يتم تحميله بعد!");
+
+            const fields = [
+                { selector: "text:nth-of-type(1)", value: document.getElementById("nameInput").value },
+                { selector: "text:nth-of-type(2)", value: document.getElementById("jobInput").value },
+                { selector: "text:nth-of-type(3)", value: document.getElementById("locationInput").value },
+                { selector: "text:nth-of-type(4)", value: document.getElementById("emailInput").value },
+                { selector: "text:nth-of-type(5)", value: document.getElementById("websiteInput").value },
+                { selector: "text:nth-of-type(6)", value: document.getElementById("phoneInput").value },
+                { selector: "text:nth-of-type(7)", value: document.getElementById("phoneInput").value } // لتحديث الرقم في مكانين
+            ];
+
+            fields.forEach(field => {
+                const element = svgElement.querySelector(field.selector);
+                if (element) element.textContent = field.value;
+            });
+        }
+
+        function downloadSVG() {
+            if (!svgElement) return alert("الـ SVG لم يتم تحميله بعد!");
+
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "updated_lastupdat.svg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        loadSVG();
+    </script>
+
+</body>
+</html>
